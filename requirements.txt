@@ -1,0 +1,7 @@
+torch==2.2.2
+transformers~=4.40
+datasets>=2.19.1
+wandb==0.16.4
+sentencepiece
+accelerate~=0.29
+cyclopts>=2.6.1
