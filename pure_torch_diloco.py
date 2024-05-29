@@ -140,15 +140,10 @@ def main(
                 ]
 
                 for param_offloaded, param in zip(params_offloaded, main_param):
-                    param.grad = param_offloaded.data.to(param.device) - param.data
-
-                for param in [
-                    param
-                    for group in outer_optimizer.param_groups
-                    for param in group["params"]
-                ]:
-                    if param.requires_grad and param.grad is not None:
-                        dist.all_reduce(param.grad, op=dist.ReduceOp.AVG)
+                    param_offloaded_on_device = param_offloaded.data.to(param.device)
+                    param.grad = param_offloaded_on_device - param.data
+                    dist.all_reduce(tensor=param.grad, op=dist.ReduceOp.AVG)
+                    param.data = param_offloaded_on_device
 
                 outer_optimizer.step()
                 outer_optimizer.zero_grad()
