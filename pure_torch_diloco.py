@@ -66,7 +66,9 @@ def main(
         dist.broadcast(param.data, src=0)
 
     # Setup optimizers
-    inner_optimizer = torch.optim.AdamW(model.parameters(), lr=lr, betas=(0.9, 0.95))
+    inner_optimizer = torch.optim.AdamW(
+        model.parameters(), weight_decay=0.1, lr=lr, betas=(0.9, 0.95)
+    )
     outer_optimizer = torch.optim.SGD(
         model.parameters(), lr=outer_lr, momentum=0.9, nesterov=True
     )
