@@ -51,7 +51,7 @@ def main(
     world_size = int(os.environ["WORLD_SIZE"])
 
     assert batch_size % per_device_train_batch_size == 0
-    gradient_accumulation_steps = batch_size / per_device_train_batch_size
+    gradient_accumulation_steps = batch_size // per_device_train_batch_size
 
     if local_rank == 0:
         wandb.init(project=project)
@@ -86,7 +86,7 @@ def main(
     )
     tokenizer.pad_token = "</s>"  # Ensure pad token is set for models that need it
 
-    ds = load_dataset("PrimeIntellect/c4-tiny", "en", ignore_verifications=True)
+    ds = load_dataset("PrimeIntellect/c4-tiny", "en", verification_mode="no_checks")
 
     def tokenize_function(data):
         outputs = tokenizer(data["text"], truncation=True, max_length=seq_length)
