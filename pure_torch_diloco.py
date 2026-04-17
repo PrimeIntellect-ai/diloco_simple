@@ -166,7 +166,7 @@ def main(
                 print(
                     f"step: {real_step}, loss: {loss_batch.item()}, lr {[group['lr'] for group in inner_optimizer.param_groups][0]}"
                 )
-                loss_batch = 0
+            loss_batch = 0
 
     print("Training completed.")
     wandb.finish()
